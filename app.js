@@ -1,4 +1,5 @@
 const express = require('express');  // Useful to create Express applications
+const bodyParser = require('body-parser'); // Useful to transform requests body to JSON (ie usable JS objets)
 
 const app = express(); // Creates an Express app
 
@@ -9,5 +10,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS'); // Allows to use these methods when accessing the resource in response to a preflight request
     next();
 });
+
+app.use(bodyParser.json()); // Transforms requests body to JSON (ie usable JS objects) (middleware applied to all routes)
 
 module.exports = app; // Exports the app
