@@ -1,7 +1,15 @@
 const express = require('express');  // Useful to create Express applications
 const bodyParser = require('body-parser'); // Useful to transform requests body to JSON (ie usable JS objets)
+const mongoose = require('mongoose'); // Useful to connect the app to the MongoDB database
 
 const app = express(); // Creates an Express app
+
+// Connects the API to MongoDB database (thanks to Mongoose)
+mongoose.connect('mongodb+srv://cdesurmo:BBTbh6wm@clustercoursbackend.bg6ef.mongodb.net/coursbackend?retryWrites=true&w=majority',
+    { useNewUrlParser: true,
+        useUnifiedTopology: true })
+    .then(() => console.log('Connexion à MongoDB réussie !'))
+    .catch(() => console.log('Connexion à MongoDB échouée !'));
 
 // Configures specific response object headers to avoid CORS errors (middleware applied to all routes)
 app.use((req, res, next) => {
