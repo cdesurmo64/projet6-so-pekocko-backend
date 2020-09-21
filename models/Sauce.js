@@ -15,5 +15,5 @@ const sauceSchema = mongoose.Schema({
     usersDisliked: { type: [String], default: [] },
 });
 
-module.exports = mongoose.model('Sauce', sauceSchema); // Exports the schema as a model called "Sauce" to make it accessible to the app
+module.exports = mongoose.model('Sauce', sauceSchema); // Exports the schema as a model called "Sauce" to make it accessible to other files
 
