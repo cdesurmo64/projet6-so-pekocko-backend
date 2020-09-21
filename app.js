@@ -2,7 +2,7 @@ const express = require('express');  // Useful to create Express applications
 
 const app = express(); // Creates an Express app
 
-// Configures specific response object headers to avoid CORS errors
+// Configures specific response object headers to avoid CORS errors (middleware applied to all routes)
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*'); // Gives access to all origins
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization'); //  In response to a preflight request, indicates which HTTP headers can be used during the actual request
