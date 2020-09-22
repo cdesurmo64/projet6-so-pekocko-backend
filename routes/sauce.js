@@ -2,9 +2,10 @@ const express = require('express'); // Useful to create a router
 const router = express.Router(); // Creates router
 
 const sauceCtrl = require('../controllers/sauce') // Imports Sauce controller
+const multer = require('../middleware/multer-config') // Imports the multer middleware (useful to handle files sent with HTTP request to our API)
 
 // POST route to create a sauce & save it in the DB
-router.post('/', sauceCtrl.createSauce);
+router.post('/', multer, sauceCtrl.createSauce);
 
 // POST route to set the like status of a sauce (like, dislike or neutral)
 router.post('/:id/like', sauceCtrl.setLikeStatus);
@@ -13,7 +14,7 @@ router.post('/:id/like', sauceCtrl.setLikeStatus);
 router.get('/:id', sauceCtrl.getOneSauce);
 
 // Individual PUT route to modify a sauce in the DB
-router.put('/:id', sauceCtrl.modifySauce);
+router.put('/:id', multer, sauceCtrl.modifySauce);
 
 // Individual DELETE route to delete a sauce from the DB
 router.delete('/:id', sauceCtrl.deleteSauce);
