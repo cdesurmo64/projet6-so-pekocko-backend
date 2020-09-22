@@ -17,3 +17,30 @@ exports.signup = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error })); // If it fails to create the hash -> Sends a 500 status and the error in an object
 };
+
+// @desc To logging in existing users
+// @route POST /api/auth/login
+// @access Public
+//
+exports.login = (req, res, next) => {
+    User.findOne({ email: req.body.email }) // Search in the DB for a User whose email is the one sent in the request body
+        .then(user => { // If communication with the mongoDB succeeded : we get the user
+            if (!user) { // If no user was found for this email
+                return res.status(401).json({ error: 'Utilisateur non trouvé !' }); // 401 Unauthorized error
+            }
+            // If a user was found
+            bcrypt.compare(req.body.password, user.password) // Compares the request body password with the hash associated to the User found in the DB
+                .then(valid => { // If communication with the mongoDB succeeded : we get the a Boolean
+                    if (!valid) { // If Boolean = false -> = if the user entered the wrong password
+                        return res.status(401).json({ error: 'Mot de passe incorrect !' }); // 401 Unauthorized error
+                    }
+                    // If Boolean = true -> if they match = if the user entered the good password
+                    res.status(200).json({ // Sends back what's excepted by the frontend :
+                        userId: user._id, // The userId collected in the DB
+                        token: 'TOKEN'
+                    });
+                })
+                .catch(error => res.status(500).json({ error })); // If communication with the mongoDB failed for the password comparison -> Server Error
+        })
+        .catch(error => res.status(500).json({ error })); // If communication with the mongoDB failed to get the user -> Server Error
+};
