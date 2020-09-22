@@ -3,6 +3,7 @@ const bodyParser = require('body-parser'); // Useful to transform requests body 
 const mongoose = require('mongoose'); // Useful to connect the app to the MongoDB database
 
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
+const userRoutes = require('./routes/user'); // Imports user router
 
 const app = express(); // Creates an Express app
 
@@ -24,5 +25,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json()); // Transforms requests body to JSON (ie usable JS objects) (middleware applied to all routes)
 
 app.use('/api/sauces', sauceRoutes); // To register the sauce router for all requests made to /api/sauces
+app.use('/api/auth', userRoutes); // To register the user router for all requests made to /api/auth
 
 module.exports = app; // Exports the app
