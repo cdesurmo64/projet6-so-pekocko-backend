@@ -1,6 +1,7 @@
 const express = require('express');  // Useful to create Express applications
 const bodyParser = require('body-parser'); // Useful to transform requests body to JSON (ie usable JS objets)
 const mongoose = require('mongoose'); // Useful to connect the app to the MongoDB database
+const path = require('path'); // Useful to get the path to our server files system
 
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
 const userRoutes = require('./routes/user'); // Imports user router
@@ -23,6 +24,8 @@ app.use((req, res, next) => {
 });
 
 app.use(bodyParser.json()); // Transforms requests body to JSON (ie usable JS objects) (middleware applied to all routes)
+
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Adds this router manager to requests made to /images, which tells Express to serve the folder images
 
 app.use('/api/sauces', sauceRoutes); // To register the sauce router for all requests made to /api/sauces
 app.use('/api/auth', userRoutes); // To register the user router for all requests made to /api/auth
