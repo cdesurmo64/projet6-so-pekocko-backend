@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt'); // Useful to encrypt passwords before saving them in the DB
 const User = require('../models/user'); // Imports the data model User
+const jwt = require('jsonwebtoken'); // Useful to create authentication tokens
 
 // @desc Creates a new user
 // @route POST /api/auth/signup
@@ -37,7 +38,11 @@ exports.login = (req, res, next) => {
                     // If Boolean = true -> if they match = if the user entered the good password
                     res.status(200).json({ // Sends back what's excepted by the frontend :
                         userId: user._id, // The userId collected in the DB
-                        token: 'TOKEN'
+                        token: jwt.sign(  // A random authentication token (sign() encodes a new token)
+                            { userId: user._id }, // ... that includes the userId as payload (= encrypted data)
+                            'RANDOM_TOKEN_SECRET', // ...thanks to a development temporary secret string to encode the token
+                            { expiresIn: '24h' } // ... Tokens being valid for 24h
+                        )
                     });
                 })
                 .catch(error => res.status(500).json({ error })); // If communication with the mongoDB failed for the password comparison -> Server Error
