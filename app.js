@@ -3,6 +3,7 @@ const bodyParser = require('body-parser'); // Useful to transform requests body 
 const mongoose = require('mongoose'); // Useful to connect the app to the MongoDB database
 const path = require('path'); // Useful to get the path to our server files system
 const helmet = require('helmet'); // Useful to set secured HTTP headers
+const mongoSanitize  = require('express-mongo-sanitize'); // Useful to sanitize user-supplied data to prevent MongoDB Operator Injection
 
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
 const userRoutes = require('./routes/user'); // Imports user router
@@ -28,6 +29,7 @@ app.use((req, res, next) => {
 
 app.use(helmet()); // Sets secured HTTP headers on all routes requests
 app.use(requestsRateLimiter); // Sets the max number of requests to 100 in 1h on all routes
+app.use(mongoSanitize()); // Removes any data containing prohibited characters from requests made to all routes
 app.use(bodyParser.json()); // Transforms requests body to JSON (ie usable JS objects) (middleware applied to all routes)
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Adds this router manager to requests made to /images, which tells Express to serve the folder images
