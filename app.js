@@ -7,6 +7,8 @@ const helmet = require('helmet'); // Useful to set secured HTTP headers
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
 const userRoutes = require('./routes/user'); // Imports user router
 
+const requestsRateLimiter = require('./middleware/all-routes-rate-limit-config'); // Imports the middleware which sets the number of requests to 100 in 1h
+
 const app = express(); // Creates an Express app
 
 // Connects the API to MongoDB database (thanks to Mongoose)
@@ -25,6 +27,7 @@ app.use((req, res, next) => {
 });
 
 app.use(helmet()); // Sets secured HTTP headers on all routes requests
+app.use(requestsRateLimiter); // Sets the max number of requests to 100 in 1h
 app.use(bodyParser.json()); // Transforms requests body to JSON (ie usable JS objects) (middleware applied to all routes)
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Adds this router manager to requests made to /images, which tells Express to serve the folder images
