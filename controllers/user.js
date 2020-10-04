@@ -40,7 +40,7 @@ exports.login = (req, res, next) => {
                         userId: user._id, // The userId collected in the DB
                         token: jwt.sign(  // A random authentication token (sign() encodes a new token)
                             { userId: user._id }, // ... that includes the userId as payload (= encrypted data)
-                            'RANDOM_TOKEN_SECRET', // ...thanks to a development temporary secret string to encode the token
+                            'tf9QvVw1PfjHCfLnta5oWfO4psliZU6RLF28sbmmCRntLhFLcxN2oCrZXIPlgI4Jc4nN1YwnODYEpw74xvte6FviMGDJx8jfLlsQaH0gAaZVYVrXU7QeAs6NYG1Ls4JuH5ICbUTHhNkpRdeQirlJvQMeFLZlKwVX5ow0VI1EWeSXDOQJFKXsHbraDZl2hLdf7PANcDQlAR3MAms5cYtChBJf8r00fFY8gyQkDsqYJF2ShFGgDxCzpOgs5Zb1mpYtPHyHcY0akuIKgdtzjgCZDCInFPaGq6SRsdJuf1mQK1MONdqlKLatjTaaHkyeXZHdflgtvSEmwCLO8c6rkhL3Cmgk5rbTDGYHWcrgnVALrA7aAaNjP3LXQGL713bljaPP2VaoLWHpqgAfTN4bcXsLK8V1NsU7O81W2aOMhSaGQ0XGE0D3J7QvYxcXovtZ6XPpDCaMgJbhcwMJszRJ2wXzBT939UNzJCYJea5MjANzDfU70IBc6EAi', // ...thanks to a secret string to encode the token
                             { expiresIn: '24h' } // ... Tokens being valid for 24h
                         )
                     });
