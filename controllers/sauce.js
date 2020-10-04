@@ -36,7 +36,7 @@ exports.setLikeStatus = async (req, res, next) => {
                         .then(() => res.status(200).json({ message: 'Like ajouté!' }))
                         .catch(error => res.status(400).json({ error }));
                 } else { // If the user already liked the sauce
-                    res.status(200).json({ message: 'Cet utilisateur a déjà mis un like à cette sauce !' });
+                    res.status(400).json({ message: 'Cet utilisateur a déjà mis un like à cette sauce !' });
                 }
                 break;
             case -1: // If the user wants to dislike the sauce
@@ -46,11 +46,11 @@ exports.setLikeStatus = async (req, res, next) => {
                             $inc: { dislikes: 1}, // Adds 1 to the number of dislikes
                             $push: { usersDisliked: userId } // Adds the userId to the array containing the users who disliked this sauce
                         })
-                        .then(() => res.status(200).json({ message: 'Dislike ajouté!' }))
+                        .then(() => res.status(200).json({ message: 'Dislike ajouté !' }))
                         .catch(error => res.status(400).json({ error }));
                 }
                 else { // If the user already disliked the sauce
-                    res.status(200).json({ message: 'Cet utilisateur a déjà mis un dislike à cette sauce !' });
+                    res.status(400).json({ message: 'Cet utilisateur a déjà mis un dislike à cette sauce !' });
                 }
                 break;
             case 0: // If the user wants to remove his previous like/dislike
@@ -60,7 +60,7 @@ exports.setLikeStatus = async (req, res, next) => {
                             $inc: { likes: -1 }, // Removes 1 from the number of likes
                             $pull: { usersLiked: userId } // Removes the userId from the array containing the users who liked this sauce
                         })
-                        .then(() => res.status(200).json({ message: 'Like supprimé!' }))
+                        .then(() => res.status(200).json({ message: 'Like supprimé !' }))
                         .catch(error => res.status(400).json({ error }));
                 } else if (sauce.usersDisliked.includes(userId)) { // If the user disliked the sauce before
                     Sauce.updateOne({_id: req.params.id}, // Updates the sauce from the DB which _id is the same as the one in the request param
@@ -68,14 +68,14 @@ exports.setLikeStatus = async (req, res, next) => {
                             $inc: { dislikes: -1 }, // Removes 1 from the number of dislikes
                             $pull: { usersDisliked: userId } // Removes the userId from the array containing the users who disliked this sauce
                         })
-                        .then(() => res.status(200).json({message: 'Dislike supprimé!'}))
+                        .then(() => res.status(200).json({message: 'Dislike supprimé !'}))
                         .catch(error => res.status(400).json({ error }));
                 } else {
-                    console.log('L\'opinion de l\'utilisateur sur cette sauce est introuvable')
+                    res.status(400).json({ message: 'L\'opinion de l\'utilisateur sur cette sauce est introuvable !' });
                 }
                 break;
             default:
-                console.log('Valeur du like incorrecte');
+                res.status(400).json({ message: 'Valeur du like incorrecte !' });
         }
     } catch (error) {
         res.status(500).json({ error });
