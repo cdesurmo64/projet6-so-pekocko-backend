@@ -14,9 +14,9 @@ exports.signup = (req, res, next) => {
             });
             user.save() // To save the new user in the DB
                 .then(() => res.status(201).json({ message: 'Utilisateur créé !' })) // If it succeeds to save -> Sends a 201 status and a msg
-                .catch(error => res.status(400).json({ error })); // If it fails to save -> Sends a 400 status and the error in an object
+                .catch(error => res.status(400).json({ error: error.message })); // If it fails to save -> Sends a 400 status and the error in an object
         })
-        .catch(error => res.status(500).json({ error })); // If it fails to create the hash -> Sends a 500 status and the error in an object
+        .catch(error => res.status(500).json({ error: error.message })); // If it fails to create the hash -> Sends a 500 status and the error in an object
 };
 
 // @desc To logging in existing users
@@ -45,7 +45,7 @@ exports.login = (req, res, next) => {
                         )
                     });
                 })
-                .catch(error => res.status(500).json({ error })); // If communication with the mongoDB failed for the password comparison -> Server Error
+                .catch(error => res.status(500).json({ error: error.message })); // If communication with the mongoDB failed for the password comparison -> Server Error
         })
-        .catch(error => res.status(500).json({ error })); // If communication with the mongoDB failed to get the user -> Server Error
+        .catch(error => res.status(500).json({ error: error.message })); // If communication with the mongoDB failed to get the user -> Server Error
 };

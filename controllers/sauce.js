@@ -13,7 +13,7 @@ exports.createSauce = (req, res, next) => {
     });
     sauce.save() // Saves the sauce in the DB, and returns a promise
         .then(() => res.status(201).json({ message: 'Sauce enregistrée !' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error: error.message }));
 }
 
 // @desc Sets user's opinion on the sauce (like, dislike or 'neutral')
@@ -30,11 +30,11 @@ exports.setLikeStatus = async (req, res, next) => {
                 if (!sauce.usersLiked.includes(userId)) { // If the user did not already like the sauce
                     Sauce.updateOne({_id: req.params.id}, // Updates the sauce from the DB which _id is the same as the one in the request param
                         {
-                            $inc: { likes: 1}, // Adds 1 to the number of likes
+                            $inc: { likes: 1 }, // Adds 1 to the number of likes
                             $push: { usersLiked: userId } // Adds the userId to the array containing the users who liked this sauce
                         })
                         .then(() => res.status(200).json({ message: 'Like ajouté!' }))
-                        .catch(error => res.status(400).json({ error }));
+                        .catch(error => res.status(400).json({ error: error.message }));
                 } else { // If the user already liked the sauce
                     res.status(400).json({ message: 'Cet utilisateur a déjà mis un like à cette sauce !' });
                 }
@@ -43,11 +43,11 @@ exports.setLikeStatus = async (req, res, next) => {
                 if (!sauce.usersDisliked.includes(userId)) { // If the user did not already dislike the sauce
                     Sauce.updateOne({_id: req.params.id}, // Updates the sauce from the DB which _id is the same as the one in the request param
                         {
-                            $inc: { dislikes: 1}, // Adds 1 to the number of dislikes
+                            $inc: { dislikes: 1 }, // Adds 1 to the number of dislikes
                             $push: { usersDisliked: userId } // Adds the userId to the array containing the users who disliked this sauce
                         })
                         .then(() => res.status(200).json({ message: 'Dislike ajouté !' }))
-                        .catch(error => res.status(400).json({ error }));
+                        .catch(error => res.status(400).json({ error: error.message }));
                 }
                 else { // If the user already disliked the sauce
                     res.status(400).json({ message: 'Cet utilisateur a déjà mis un dislike à cette sauce !' });
@@ -61,7 +61,7 @@ exports.setLikeStatus = async (req, res, next) => {
                             $pull: { usersLiked: userId } // Removes the userId from the array containing the users who liked this sauce
                         })
                         .then(() => res.status(200).json({ message: 'Like supprimé !' }))
-                        .catch(error => res.status(400).json({ error }));
+                        .catch(error => res.status(400).json({ error: error.message }));
                 } else if (sauce.usersDisliked.includes(userId)) { // If the user disliked the sauce before
                     Sauce.updateOne({_id: req.params.id}, // Updates the sauce from the DB which _id is the same as the one in the request param
                         {
@@ -69,7 +69,7 @@ exports.setLikeStatus = async (req, res, next) => {
                             $pull: { usersDisliked: userId } // Removes the userId from the array containing the users who disliked this sauce
                         })
                         .then(() => res.status(200).json({message: 'Dislike supprimé !'}))
-                        .catch(error => res.status(400).json({ error }));
+                        .catch(error => res.status(400).json({ error: error.message }));
                 } else {
                     res.status(400).json({ message: 'L\'opinion de l\'utilisateur sur cette sauce est introuvable !' });
                 }
@@ -78,7 +78,7 @@ exports.setLikeStatus = async (req, res, next) => {
                 res.status(400).json({ message: 'Valeur du like incorrecte !' });
         }
     } catch (error) {
-        res.status(500).json({ error });
+        res.status(500).json({ error: error.message });
     }
 }
 
@@ -105,7 +105,7 @@ exports.modifySauce = (req, res, next) => {
 
     Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id }) // Updates the sauce from the DB which _id is the same as the one in the request param, using the new sauceObject
         .then(() => res.status(200).json({ message: 'Sauce modifiée!' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error: error.message }));
 }
 
 // @desc Deletes a sauce
@@ -118,10 +118,10 @@ exports.deleteSauce = (req, res, next) => {
             fs.unlink(`images/${filename}`, () => { // Deletes the file which path matches the first argument, and executes the callback once it's done
                 Sauce.deleteOne({ _id: req.params.id }) // Deletes the sauce from the DB which id is the same as the one in the request params
                     .then(() => res.status(200).json({ message: 'Sauce supprimée !' }))
-                    .catch(error => res.status(400).json({ error }));
+                    .catch(error => res.status(400).json({ error: error.message }));
             });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ error: error.message }));
 }
 
 // @desc Gets one sauce info
@@ -130,7 +130,7 @@ exports.deleteSauce = (req, res, next) => {
 exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id }) // Finds the corresponding sauce in the DB (with the same _id as the one in the request parameters)
         .then(sauce => res.status(200).json(sauce))
-        .catch(error => res.status(404).json({ error }));
+        .catch(error => res.status(404).json({ error: error.message }));
 }
 
 // @desc Gets all sauces info
@@ -139,5 +139,5 @@ exports.getOneSauce = (req, res, next) => {
 exports.getAllSauces = (req, res, next) => {
     Sauce.find()
         .then(sauces => res.status(200).json(sauces))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ error: error.message }));
 }
