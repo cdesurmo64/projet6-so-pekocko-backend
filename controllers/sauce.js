@@ -86,11 +86,23 @@ exports.setLikeStatus = async (req, res, next) => {
 // @route PUT /api/sauces/:id
 // @access Private
 exports.modifySauce = (req, res, next) => {
-    const sauceObject = req.file ? // Does req.file exists ?
-        { // If it exists (= if a new image was uploaded)...
-            ...JSON.parse(req.body.sauce), // Gets the JSON object from the sauce contained in the request body
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // Generates the URL of the new image
-        } : { ...req.body }; // If it doesn't : just makes a copy of the request body
+    let sauceObject
+
+    if (req.file) { // If the req.file exists ( = if an image was sent with the put request)
+        Sauce.findOne({ _id: req.params.id }) // Finds the corresponding sauce in the DB (with the same _id as the one in the request parameters)
+            .then(sauce => { // If communication with the DB succeeds : In this sauce...
+                const filename = sauce.imageUrl.split('/images/')[1]; // ...gets the filename from the right segment of the imageUrl
+                fs.unlinkSync(`images/${filename}`) // Deletes the file which path matches the first argument
+            })
+            .catch(error => res.status(500).json({ error }));
+        sauceObject = { // In the sauceObject variable ...
+            ...JSON.parse(req.body.sauce), // ...puts the JSON object from the sauce contained in the request body
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` // and generates the URL of the new image
+        }
+    } else {  // If the req.file doesn't exist
+        sauceObject = {...req.body} // just makes a copy of the request body in sauceObject
+    }
+
     Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id }) // Updates the sauce from the DB which _id is the same as the one in the request param, using the new sauceObject
         .then(() => res.status(200).json({ message: 'Sauce modifiée!' }))
         .catch(error => res.status(400).json({ error }));
