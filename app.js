@@ -2,7 +2,7 @@ const express = require('express');  // Useful to create Express applications
 const bodyParser = require('body-parser'); // Useful to transform requests body to JSON (ie usable JS objets)
 const mongoose = require('mongoose'); // Useful to connect the app to the MongoDB database
 const path = require('path'); // Useful to get the path to our server files system
-const helmet = require("helmet"); // Useful to set secured HTTP headers
+const helmet = require('helmet'); // Useful to set secured HTTP headers
 
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
 const userRoutes = require('./routes/user'); // Imports user router
