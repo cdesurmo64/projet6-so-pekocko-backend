@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');  // Useful to create Express applications
 const bodyParser = require('body-parser'); // Useful to transform requests body to JSON (ie usable JS objets)
 const mongoose = require('mongoose'); // Useful to connect the app to the MongoDB database
@@ -13,9 +14,10 @@ const requestsRateLimiter = require('./middleware/all-routes-rate-limit-config')
 const app = express(); // Creates an Express app
 
 // Connects the API to MongoDB database (thanks to Mongoose)
-mongoose.connect('mongodb+srv://cdesurmo:BBTbh6wm@clustercoursbackend.bg6ef.mongodb.net/coursbackend?retryWrites=true&w=majority',
+mongoose.connect(process.env.MONGODB_URI,
     { useNewUrlParser: true,
-        useUnifiedTopology: true })
+        useUnifiedTopology: true,
+        useCreateIndex: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
     .catch(() => console.log('Connexion à MongoDB échouée !'));
 
