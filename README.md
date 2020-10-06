@@ -20,7 +20,7 @@ I used / developed :
     * Various secured HTTP headers set thanks to [helmet](https://www.npmjs.com/package/helmet)
     * Only strong password validation at signup thanks to [password-validator](https://www.npmjs.com/package/password-validator)
     * Email syntax and uniqueness validation at signup thanks to [mongoose](https://www.npmjs.com/package/mongoose) & [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)       
-    * Different request number limitations for login in, signing up and all other actions thanks to [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)      
+    * Different request number limitations for logging in, signing up and all other actions thanks to [express-rate-limit](https://www.npmjs.com/package/express-rate-limit)      
     * User-supplied data sanitization thanks to [express-mongo-sanitize](https://www.npmjs.com/package/express-mongo-sanitize)      
     * Separated sensitive environment variables thanks to [dotenv](https://www.npmjs.com/package/dotenv)      
 
