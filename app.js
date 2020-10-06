@@ -9,7 +9,7 @@ const mongoSanitize  = require('express-mongo-sanitize'); // Useful to sanitize 
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
 const userRoutes = require('./routes/user'); // Imports user router
 
-const requestsRateLimiter = require('./middleware/all-routes-rate-limit-config'); // Imports the middleware which sets the max number of requests to 100 in 1h
+const requestsRateLimiter = require('./middleware/rate-limit-configs/all-routes-rate-limit-config'); // Imports the middleware which sets the max number of requests to 100 in 5min
 
 const app = express(); // Creates an Express app
 
