@@ -1,5 +1,5 @@
-const http = require('http'); // Imports the native Node package I'll use to create the server
-const app = require('./app'); // Imports the app
+const http = require('http'); // useful to create a Node server
+const app = require('./app');
 
 /*
  This function returns a valid port, whether supplied as a number or a string

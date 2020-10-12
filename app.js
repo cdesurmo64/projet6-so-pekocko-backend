@@ -9,7 +9,7 @@ const mongoSanitize  = require('express-mongo-sanitize'); // Useful to sanitize 
 const sauceRoutes = require('./routes/sauce'); // Imports sauce router
 const userRoutes = require('./routes/user'); // Imports user router
 
-const requestsRateLimiter = require('./middleware/rate-limit-configs/all-routes-rate-limit-config'); // Imports the middleware which sets the max number of requests to 100 in 5min
+const requestsRateLimiter = require('./middleware/rate-limit-configs/all-routes-rate-limit-config'); // Verifies if the max number of requests was reached (100 in 5min)
 
 const app = express(); // Creates an Express app
 
@@ -29,14 +29,15 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(helmet()); // Sets secured HTTP headers on all routes requests
-app.use(requestsRateLimiter); // Sets the max number of requests to 100 in 1h on all routes
-app.use(mongoSanitize()); // Removes any data containing prohibited characters from requests made to all routes
-app.use(bodyParser.json()); // Transforms requests body to JSON (ie usable JS objects) (middleware applied to all routes)
+// Middlewares applied to all routes
+app.use(helmet());
+app.use(requestsRateLimiter);
+app.use(mongoSanitize());
+app.use(bodyParser.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images'))); // Adds this router manager to requests made to /images, which tells Express to serve the folder images
 
 app.use('/api/sauces', sauceRoutes); // To register the sauce router for all requests made to /api/sauces
 app.use('/api/auth', userRoutes); // To register the user router for all requests made to /api/auth
 
-module.exports = app; // Exports the app
+module.exports = app;
