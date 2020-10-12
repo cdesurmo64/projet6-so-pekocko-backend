@@ -27,9 +27,17 @@ I used / developed :
 
 ## How to test the app
 
+### Prerequesites 
+*  [Node.js](https://nodejs.org/en/)
+*  Angular CLI -> run _npm install -g @angular/cli_  in the terminal in your dev projects directory
+*  node-sass -> run _npm install -g node-sass_  in the terminal in your dev projects directory
+*  Nodemon ->  run _npm install -g nodemon_  in the terminal in your dev projects directory
+
+
+### To enjoy the app 
 1. Clone [the repo containing the frontend](https://github.com/OpenClassrooms-Student-Center/dwj-projet6) and open it. In the **frontend directory** :
-    * Install dependencies : npm install (on the terminal)
-    * Builds and serves the app : npm start (on the terminal)
+    * Install dependencies : _npm install_ (on the terminal)
+    * Builds and serves the app : _npm start_ (on the terminal)
 
 2. Clone [this repo containing the backend I developed](https://github.com/cdesurmo64/projet6-so-pekocko-backend) 
 
@@ -38,8 +46,8 @@ I used / developed :
     * TOKEN_KEY = '[a_random_string_to_encode_tokens]'
 
 4. In the **backend directory** : 
-    * Install dependencies : npm install (on the terminal)
-    * Start the node server : nodemon server (on the terminal)
+    * Install dependencies : _npm install_ (on the terminal)
+    * Start the node server : _nodemon server_ (on the terminal)
     
 5. You can enjoy the app at the following address : http://localhost:4200 
 
